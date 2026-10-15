@@ -1,0 +1,14 @@
+# Clon de LocalCDN (código de terceros, ~117 MB): se obtiene con tools/fetch-upstream.sh
+upstream/
+
+# Artefactos de build
+dist/
+*.zip
+
+# Clave de firma privada/pública local (no versionar la privada; la pública puede compartirse)
+manifest/key.pem
+manifest/key.txt
+
+# Basura del sistema
+.DS_Store
+*.swp
