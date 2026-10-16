@@ -6,7 +6,7 @@ Plan de trabajo detallado del port. Prioridades: **P0** = necesario para usarlo 
 Leyenda de estimación: ~horas · ~~días · tamaño S/M/L.
 Criterio de terminado por defecto: el ítem incluye cómo verificarlo.
 
-Estado global: **Fases 0 y 5.x de base hechas**; **Fase 2 completada y verificada**, **Fase 4 completada (4.1–4.5)**, **Fase 6 prototipo viable y verificado (6.1, 6.2, 6.5, 6.6)**. Pendiente: 0.6–0.9, 1.4–1.9, 2.6–2.8, 3.x, 4.6–4.8, 5.2–5.6 y 6.3–6.4.
+Estado global: **Fases 0 y 5.x de base hechas**; **Fase 2 completada y verificada**, **Fase 4 completada (4.1–4.5 y 4.8; 4.6–4.7 documentados)**, **Fase 6 prototipo viable y verificado (6.1, 6.2, 6.5, 6.6)**. Pendiente: 0.6–0.9, 1.4–1.9, 2.8, 3.x, 4.6–4.7, 5.2–5.6 y 6.3–6.4.
 
 ---
 
@@ -182,18 +182,25 @@ Objetivo: confianza para usarlo a diario y detectar regresiones al actualizar up
   **Hecho (16-oct-2026).** Funciona; matiz: la clave debe coincidir con `URL.host` **incluido el
   puerto** (`127.0.0.1:8906` sí; `127.0.0.1` no).
   Comprobar que la lista blanca de dominios desactiva la inyección en esos sitios.
-- [ ] **4.6 Regresión en sitios reales** (M) — P1
-  Navegar por ~20 sitios conocidos (noticias, tiendas, foros) y revisar que no haya errores nuevos de
-  consola ni recursos roscados. Documentar hallazgos.
+- [~] **4.6 Regresión en sitios reales** (M) — P1
+  **No ejecutado.** Requiere navegar ~20 sitios reales y la estación de pruebas usa una red
+  restringida (Psiphon), así que los fallos de carga no serían atribuibles a la extensión. Método
+  listo: mismo esquema que `tools/e2e-matrix.sh` pero con `PAGES` de sitios reales y filtrado de
+  errores de consola por origen. En su lugar se cubre la regresión con páginas locales que usan
+  jQuery+Bootstrap+Font Awesome (`e2e-matrix.sh` 22/22).
 - [ ] **4.9 Validar los mapeos en tiempo de build** (S) — P1
   Encontrados **36 mapeos de upstream que apuntan a ficheros locales inexistentes** (rompen la web:
   redirigen a un recurso que no existe). Añadir una validación en `patch-build.py`/`build.sh` que
   descarte esos mapeos. Detalle en `docs/LIMITACIONES.md` §5.
-- [ ] **4.7 Automatización avanzada con Playwright/Puppeteer sobre Vivaldi** (M) — P2
-  `tools/cdp.py` cubre lo básico; Playwright permitiría aserciones de UI y CI.
-- [ ] **4.8 Rendimiento** (S) — P2
-  Medir impacto en carga (antes/después) con y sin la extensión; vigilar `onBeforeRequest` sobre
-  `validHosts`.
+- [~] **4.7 Automatización avanzada con Playwright/Puppeteer sobre Vivaldi** (M) — P2
+  **Documentado, no adoptado.** `tools/cdp.py` (stdlib) cubre intercepción, DOM y capturas; se
+  mantiene por D-005 (sin dependencias). Playwright aportaría aserciones de UI y CI, pero Vivaldi no
+  tiene *headless* y añadiría una dependencia pesada; queda como mejora opcional.
+- [x] **4.8 Rendimiento** (S) — P2
+  **Medido (16-oct-2026).** `tools/e2e-perf.sh`: coste de servir 22 ficheros (4,4 MB) interceptados
+  frente al mismo fichero por HTTP local → **sobrecoste ≈ 4 ms por petición** (mediana 10,0 vs
+  5,9 ms; 0 fallos). El baseline de descarga desde el CDN queda pendiente por la red restringida.
+  `docs/RENDIMIENTO.md`.
 
 ---
 
