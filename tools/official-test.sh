@@ -35,7 +35,7 @@ else
 fi
 
 [[ -d "$TARGET" ]] || { echo "[x] Falta $TARGET. Ejecuta tools/build.sh" >&2; exit 1; }
-BIN="${VIVALDI_BIN:-$(command -v vivaldi-stable || command -v vivaldi || echo /opt/vivaldi/vivaldi)}"
+BIN="${VIVALDI_BIN:-$(command -v vivaldi-stable || command -v vivaldi || command -v google-chrome || command -v chromium || command -v chromium-browser || echo /opt/vivaldi/vivaldi)}"
 
 rm -rf "$WORK"; mkdir -p "$WORK"
 PROFILE="$(mktemp -d /tmp/opencode/vivaldi-official.XXXXXX)"
