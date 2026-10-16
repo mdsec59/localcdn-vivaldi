@@ -1,0 +1,140 @@
+{
+  "customUrlsTab": {
+    "message": "URLs propias"
+  },
+  "customUrlsTitle": {
+    "message": "URLs personalizadas"
+  },
+  "customUrlsDescription": {
+    "message": "Añade tus propios mapeos: cuando una web pida una URL que coincida con tu patrón, LocalCDN servirá el recurso local que elijas. Sirve para cubrir versiones o CDNs que la extensión todavía no conoce."
+  },
+  "customUrlsAddTitle": {
+    "message": "Añadir una URL"
+  },
+  "customUrlsPattern": {
+    "message": "URL del CDN o patrón"
+  },
+  "customUrlsMatchType": {
+    "message": "Tipo de coincidencia"
+  },
+  "customUrlsMatchGlob": {
+    "message": "Comodines (* y ?)"
+  },
+  "customUrlsMatchRegex": {
+    "message": "Expresión regular"
+  },
+  "customUrlsDetect": {
+    "message": "Detectar recurso local"
+  },
+  "customUrlsResource": {
+    "message": "Recurso local de la extensión"
+  },
+  "customUrlsLabel": {
+    "message": "Etiqueta (opcional)"
+  },
+  "customUrlsAdd": {
+    "message": "Añadir URL"
+  },
+  "customUrlsHint": {
+    "message": "Ejemplos: 1) URL exacta: https://cdn.ejemplo.com/lib/jquery-3.7.1.min.js   2) Con comodines: https://cdn.ejemplo.com/lib/*.min.js   3) Regex: ^https://cdn\\.ejemplo\\.com/lib/[0-9.]+/lib\\.min\\.js$"
+  },
+  "customUrlsListTitle": {
+    "message": "URLs personalizadas activas"
+  },
+  "customUrlsColumnState": {
+    "message": "Estado"
+  },
+  "customUrlsColumnPattern": {
+    "message": "Patrón"
+  },
+  "customUrlsColumnResource": {
+    "message": "Recurso local"
+  },
+  "customUrlsColumnActions": {
+    "message": "Acciones"
+  },
+  "customUrlsEmpty": {
+    "message": "Todavía no has añadido ninguna URL."
+  },
+  "customUrlsRemove": {
+    "message": "Quitar"
+  },
+  "customUrlsRemoved": {
+    "message": "URL eliminada."
+  },
+  "customUrlsToggled": {
+    "message": "Estado actualizado."
+  },
+  "customUrlsAdded": {
+    "message": "URL añadida y activa."
+  },
+  "customUrlsTestTitle": {
+    "message": "Probar una URL"
+  },
+  "customUrlsTest": {
+    "message": "Probar"
+  },
+  "customUrlsTestMatch": {
+    "message": "¡Coincide!"
+  },
+  "customUrlsTestNoMatch": {
+    "message": "Ninguna URL personalizada coincide con esa dirección."
+  },
+  "customUrlsImportExportTitle": {
+    "message": "Importar / exportar"
+  },
+  "customUrlsExport": {
+    "message": "Exportar"
+  },
+  "customUrlsImport": {
+    "message": "Importar"
+  },
+  "customUrlsClear": {
+    "message": "Borrar todo"
+  },
+  "customUrlsImportHint": {
+    "message": "Puedes pegar una lista JSON de entradas y pulsar Importar. Formato: [{\"pattern\": \"...\", \"resource\": \"resources/...\"}]"
+  },
+  "customUrlsExported": {
+    "message": "Lista exportada al cuadro de texto."
+  },
+  "customUrlsImported": {
+    "message": "Importadas:"
+  },
+  "customUrlsImportErrors": {
+    "message": "con errores:"
+  },
+  "customUrlsCleared": {
+    "message": "Se han borrado todas las URLs personalizadas."
+  },
+  "customUrlsCandidates": {
+    "message": "Candidatos encontrados:"
+  },
+  "customUrlsNoCandidates": {
+    "message": "No se encontró un recurso local parecido. Elige una ruta de la lista (resources/…)."
+  },
+  "customUrlsResourceHint": {
+    "message": "Los recursos disponibles son los que ya incluye la extensión (carpeta resources/). Para tener recursos más recientes, actualiza desde el repositorio y vuelve a construir."
+  },
+  "customUrlsErrorEmptyPattern": {
+    "message": "Escribe una URL o patrón."
+  },
+  "customUrlsErrorInvalidRegex": {
+    "message": "La expresión regular no es válida."
+  },
+  "customUrlsErrorNoHost": {
+    "message": "No se pudo deducir el dominio del patrón. Incluye el dominio en el patrón."
+  },
+  "customUrlsErrorBadResource": {
+    "message": "La ruta debe ser un recurso interno, p. ej. resources/jquery/3.7.1/jquery.min.jsm"
+  },
+  "customUrlsErrorResourceNotFound": {
+    "message": "El recurso local no existe en esta extensión."
+  },
+  "customUrlsErrorInvalidJson": {
+    "message": "El JSON no es válido."
+  },
+  "customUrlsErrorNotAnArray": {
+    "message": "El JSON debe ser una lista de entradas."
+  }
+}

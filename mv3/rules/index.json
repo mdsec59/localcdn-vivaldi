@@ -1,0 +1,281 @@
+{
+  "generado": "2026-10-16T14:47:35.709Z",
+  "ultimaActualizacionDeMappings": "2025-11-21",
+  "base": "dist/localcdn-vivaldi",
+  "recursosDeFichero": 293,
+  "recursosDeDirectorio": 20,
+  "ficherosLocales": 2011,
+  "reglasTotales": 83960,
+  "urlsDistintas": 41980,
+  "rulesets": 14,
+  "hosts": 67,
+  "maxReglasEnUnRuleset": 7216,
+  "reglasPorRuleset": [
+    {
+      "id": "ruleset-01",
+      "reglas": 7216,
+      "hosts": [
+        "cdnjs.cloudflare.com"
+      ]
+    },
+    {
+      "id": "ruleset-02",
+      "reglas": 7216,
+      "hosts": [
+        "pagecdn.io"
+      ]
+    },
+    {
+      "id": "ruleset-03",
+      "reglas": 7216,
+      "hosts": [
+        "cdnjs.loli.net"
+      ]
+    },
+    {
+      "id": "ruleset-04",
+      "reglas": 7216,
+      "hosts": [
+        "lib.baomitu.com"
+      ]
+    },
+    {
+      "id": "ruleset-05",
+      "reglas": 7216,
+      "hosts": [
+        "cdn.bootcdn.net"
+      ]
+    },
+    {
+      "id": "ruleset-06",
+      "reglas": 7216,
+      "hosts": [
+        "cdn.bootcdn.net.maoyundns.com"
+      ]
+    },
+    {
+      "id": "ruleset-07",
+      "reglas": 7216,
+      "hosts": [
+        "cdnjs.loli.net.cdn.cloudflare.net"
+      ]
+    },
+    {
+      "id": "ruleset-08",
+      "reglas": 7216,
+      "hosts": [
+        "lib.baomitu.com.qh-cdn.com"
+      ]
+    },
+    {
+      "id": "ruleset-09",
+      "reglas": 4864,
+      "hosts": [
+        "cdn.jsdelivr.net"
+      ]
+    },
+    {
+      "id": "ruleset-10",
+      "reglas": 4864,
+      "hosts": [
+        "cdn.jsdelivr.net.cdn.cloudflare.net"
+      ]
+    },
+    {
+      "id": "ruleset-11",
+      "reglas": 4864,
+      "hosts": [
+        "jsdelivr.map.fastly.net"
+      ]
+    },
+    {
+      "id": "ruleset-12",
+      "reglas": 4000,
+      "hosts": [
+        "yandex.st",
+        "cdn.bootcss.com",
+        "cdn.bootcss.com.maoyundns.com",
+        "ajax.googleapis.com",
+        "mat1.gtimg.com",
+        "gitcdn.github.io",
+        "cdn.materialdesignicons.com",
+        "materialdesignicons.b-cdn.net",
+        "fonts.googleapis.com"
+      ]
+    },
+    {
+      "id": "ruleset-13",
+      "reglas": 4000,
+      "hosts": [
+        "unpkg.com",
+        "libs.baidu.com",
+        "developer.n.shifen.com",
+        "sdn.geekzu.org",
+        "ajax.proxy.ustclug.org",
+        "ajax.loli.net",
+        "mat1.gtimg.com.tegsea.tc.qq.com",
+        "fonts.loli.net",
+        "fonts.gstatic.com",
+        "fonts.loli.net.cdn.cloudflare.net",
+        "gstaticadssl.l.google.com",
+        "ajax.cloudflare.com",
+        "akamai-webcdn.kgstatic.net"
+      ]
+    },
+    {
+      "id": "ruleset-14",
+      "reglas": 3640,
+      "hosts": [
+        "ajax.loli.net.cdn.cloudflare.net",
+        "gateway.cname.ustclug.org",
+        "sdn.inbond.gslb.geekzu.org",
+        "apps.bdimg.com",
+        "apps.bdimg.jomodns.com",
+        "yastatic.net",
+        "cdn.staticfile.org",
+        "iduwdjf.qiniudns.com",
+        "cdn.datatables.net",
+        "maxcdn.bootstrapcdn.com",
+        "netdna.bootstrapcdn.com",
+        "mathjax.rstudio.com",
+        "cdn.mathjax.org",
+        "lib.sinaapp.com",
+        "lb.sae.sina.com.cn",
+        "ajax.aspnetcdn.com",
+        "stackpath.bootstrapcdn.com",
+        "code.jquery.com",
+        "cds.s5x3j6q5.hwcdn.net",
+        "ajax.microsoft.com",
+        "mscomajax.vo.msecnd.net",
+        "upcdn.b0.upaiyun.com",
+        "vo.aicdn.com",
+        "use.fontawesome.com",
+        "use.fontawesome.com.cdn.cloudflare.net",
+        "vjs.zencdn.net",
+        "dualstack.osff.map.fastly.net",
+        "cdn.plyr.io",
+        "cdn.ravenjs.com",
+        "js.appboycdn.com",
+        "cdn.embed.ly",
+        "code.createjs.com",
+        "akamai-webcdn.kgstatic.net.edgesuite.net",
+        "cdn.embed.ly.cdn.cloudflare.net"
+      ]
+    }
+  ],
+  "incidencias": {
+    "mappingsSinRecurso": [],
+    "mappingsSinFicheroLocal": [
+      "cdnjs.cloudflare.com/ajax/libs/fancybox/{version}/helpers/jquery.fancybox-media.js -> resources/fancybox/{version}/helpers/jquery.fancybox-media.jsm",
+      "cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/{version}/js/jquery.tablesorter. -> resources/jquery.tablesorter/{version}/jquery.tablesorter.min.jsm",
+      "cdnjs.cloudflare.com/ajax/libs/lightgallery/{version}/js/lightgallery. -> resources/lightgallery/{version}/js/lightgallery-all.min.jsm",
+      "cdnjs.cloudflare.com/ajax/libs/raven.js/{version}/plugins/angular.min.js -> resources/raven.js/{version}/plugins/angular.min.jsm",
+      "cdn.jsdelivr.net/npm/docsify-themeable@{version}/dist/css/theme-defaults.css -> resources/docsify-themeable/{version}/theme-default.css",
+      "unpkg.com/docsify-themeable@{version}/dist/css/theme-defaults.css -> resources/docsify-themeable/{version}/theme-default.css",
+      "pagecdn.io/lib/fancybox/{version}/helpers/jquery.fancybox-media.js -> resources/fancybox/{version}/helpers/jquery.fancybox-media.jsm",
+      "pagecdn.io/lib/jquery.tablesorter/{version}/js/jquery.tablesorter. -> resources/jquery.tablesorter/{version}/jquery.tablesorter.min.jsm",
+      "pagecdn.io/lib/lightgallery/{version}/js/lightgallery. -> resources/lightgallery/{version}/js/lightgallery-all.min.jsm",
+      "pagecdn.io/lib/raven.js/{version}/plugins/angular.min.js -> resources/raven.js/{version}/plugins/angular.min.jsm",
+      "cdnjs.loli.net/ajax/libs/fancybox/{version}/helpers/jquery.fancybox-media.js -> resources/fancybox/{version}/helpers/jquery.fancybox-media.jsm",
+      "cdnjs.loli.net/ajax/libs/jquery.tablesorter/{version}/js/jquery.tablesorter. -> resources/jquery.tablesorter/{version}/jquery.tablesorter.min.jsm",
+      "cdnjs.loli.net/ajax/libs/lightgallery/{version}/js/lightgallery. -> resources/lightgallery/{version}/js/lightgallery-all.min.jsm",
+      "cdnjs.loli.net/ajax/libs/raven.js/{version}/plugins/angular.min.js -> resources/raven.js/{version}/plugins/angular.min.jsm",
+      "lib.baomitu.com/fancybox/{version}/helpers/jquery.fancybox-media.js -> resources/fancybox/{version}/helpers/jquery.fancybox-media.jsm",
+      "lib.baomitu.com/jquery.tablesorter/{version}/js/jquery.tablesorter. -> resources/jquery.tablesorter/{version}/jquery.tablesorter.min.jsm",
+      "lib.baomitu.com/lightgallery/{version}/js/lightgallery. -> resources/lightgallery/{version}/js/lightgallery-all.min.jsm",
+      "lib.baomitu.com/raven.js/{version}/plugins/angular.min.js -> resources/raven.js/{version}/plugins/angular.min.jsm",
+      "cdn.bootcdn.net/ajax/libs/fancybox/{version}/helpers/jquery.fancybox-media.js -> resources/fancybox/{version}/helpers/jquery.fancybox-media.jsm",
+      "cdn.bootcdn.net/ajax/libs/jquery.tablesorter/{version}/js/jquery.tablesorter. -> resources/jquery.tablesorter/{version}/jquery.tablesorter.min.jsm"
+    ],
+    "mappingsSinFicheroLocalTotal": 36,
+    "recursosSinFicheroLocal": [
+      "bootstrapFontsOnly",
+      "docsifyThemeDefault",
+      "fancyBoxMediaJS",
+      "jQueryTablesorter",
+      "lightGalleryJS",
+      "ravenPluginAngularJS"
+    ]
+  },
+  "fragmentoManifest": {
+    "manifest_version": 3,
+    "declarative_net_request": {
+      "rule_resources": [
+        {
+          "id": "ruleset-01",
+          "enabled": true,
+          "path": "rules/ruleset-01.json"
+        },
+        {
+          "id": "ruleset-02",
+          "enabled": true,
+          "path": "rules/ruleset-02.json"
+        },
+        {
+          "id": "ruleset-03",
+          "enabled": true,
+          "path": "rules/ruleset-03.json"
+        },
+        {
+          "id": "ruleset-04",
+          "enabled": true,
+          "path": "rules/ruleset-04.json"
+        },
+        {
+          "id": "ruleset-05",
+          "enabled": true,
+          "path": "rules/ruleset-05.json"
+        },
+        {
+          "id": "ruleset-06",
+          "enabled": true,
+          "path": "rules/ruleset-06.json"
+        },
+        {
+          "id": "ruleset-07",
+          "enabled": true,
+          "path": "rules/ruleset-07.json"
+        },
+        {
+          "id": "ruleset-08",
+          "enabled": true,
+          "path": "rules/ruleset-08.json"
+        },
+        {
+          "id": "ruleset-09",
+          "enabled": true,
+          "path": "rules/ruleset-09.json"
+        },
+        {
+          "id": "ruleset-10",
+          "enabled": true,
+          "path": "rules/ruleset-10.json"
+        },
+        {
+          "id": "ruleset-11",
+          "enabled": true,
+          "path": "rules/ruleset-11.json"
+        },
+        {
+          "id": "ruleset-12",
+          "enabled": true,
+          "path": "rules/ruleset-12.json"
+        },
+        {
+          "id": "ruleset-13",
+          "enabled": true,
+          "path": "rules/ruleset-13.json"
+        },
+        {
+          "id": "ruleset-14",
+          "enabled": true,
+          "path": "rules/ruleset-14.json"
+        }
+      ]
+    },
+    "permissions": [
+      "declarativeNetRequest",
+      "declarativeNetRequestFeedback"
+    ]
+  }
+}

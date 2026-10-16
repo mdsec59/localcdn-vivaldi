@@ -2,14 +2,18 @@
 """Cliente CDP mínimo (solo biblioteca estándar) para Vivaldi/Chromium.
 
 Uso:
-    cdp.py list  <puerto>
-    cdp.py eval  <puerto> <subcadena-del-target> <expresion-js>
-    cdp.py close <puerto>
+    cdp.py list   <puerto>
+    cdp.py eval   <puerto> <subcadena-del-target> <expresion-js>
+    cdp.py shot   <puerto> <subcadena-del-target> <fichero.png>
+    cdp.py listen <puerto> <subcadena-del-target> [segundos] [subcadena-de-filtro]
+    cdp.py close  <puerto>
 
 Ejemplos:
     cdp.py list 9333
     cdp.py eval 9333 "127.0.0.1:8899" "document.title"
     cdp.py eval 9333 "background.html" "chrome.storage.local.get(null)"
+    cdp.py shot 9333 "localcdn.org" /tmp/opencode/test-oficial.png
+    cdp.py listen 9333 "127.0.0.1:8903" 6 "webfonts" "location.reload()"
     cdp.py close 9333
 """
 
@@ -19,6 +23,7 @@ import os
 import socket
 import struct
 import sys
+import time
 import urllib.request
 
 
@@ -119,6 +124,71 @@ def find_target(port, needle):
     return None
 
 
+def _short(value, limit=200):
+    value = value if isinstance(value, str) else json.dumps(value, ensure_ascii=False)
+    return value if len(value) <= limit else value[:limit] + "…"
+
+
+def _summarize_event(method, params, by_id):
+    """Resume un evento Network.* en un dict compacto y trazable por requestId."""
+    if method == "Network.requestWillBeSent":
+        rid = params.get("requestId")
+        by_id[rid] = params.get("request", {}).get("url", "")
+        return {
+            "ev": "request",
+            "id": rid,
+            "url": params.get("request", {}).get("url", ""),
+            "type": params.get("type"),
+            "initiator": _short(
+                (params.get("initiator") or {}).get("url")
+                or (params.get("initiator") or {}).get("type", ""),
+                120,
+            ),
+        }
+    if method == "Network.responseReceived":
+        rid = params.get("requestId")
+        response = params.get("response", {})
+        by_id.setdefault(rid, response.get("url", ""))
+        return {
+            "ev": "response",
+            "id": rid,
+            "status": response.get("status"),
+            "tipo": response.get("mimeType"),
+            "url": response.get("url", ""),
+        }
+    if method == "Network.loadingFailed":
+        rid = params.get("requestId")
+        return {
+            "ev": "failed",
+            "id": rid,
+            "error": params.get("errorText"),
+            "bloqueado": params.get("blockedReason"),
+            "url": by_id.get(rid, "?"),
+        }
+    if method == "Network.requestWillBeSentExtraInfo":
+        rid = params.get("requestId")
+        return {
+            "ev": "enviado-extra",
+            "id": rid,
+            "url": by_id.get(rid, "?"),
+            "cabeceras": {
+                k.lower(): v
+                for k, v in (params.get("headers") or {}).items()
+                if k.lower()
+                in ("origin", "referer", "cookie", "user-agent", "sec-fetch-site")
+            },
+        }
+    if method == "Network.responseReceivedExtraInfo":
+        rid = params.get("requestId")
+        return {
+            "ev": "recibido-extra",
+            "id": rid,
+            "url": by_id.get(rid, "?"),
+            "codigo": params.get("statusCode"),
+        }
+    return None
+
+
 def main(argv):
     if len(argv) < 3:
         print(__doc__)
@@ -130,6 +200,94 @@ def main(argv):
             print(
                 f"{t.get('type'):16} {t.get('id')}  {t.get('title', '')[:40]}  {t.get('url', '')[:90]}"
             )
+        return 0
+
+    if cmd == "shot":
+        if len(argv) < 5:
+            print(
+                "faltan argumentos: shot <puerto> <subcadena> <fichero.png>",
+                file=sys.stderr,
+            )
+            return 2
+        target = find_target(port, argv[3])
+        if not target:
+            print(f"[x] No hay target que contenga: {argv[3]}", file=sys.stderr)
+            return 1
+        ws = WebSocket(target["webSocketDebuggerUrl"])
+        try:
+            ws.call("Page.enable")
+            reply = ws.call(
+                "Page.captureScreenshot",
+                {"format": "png", "captureBeyondViewport": True},
+            )
+        finally:
+            ws.close()
+        data = reply.get("result", {}).get("data")
+        if not data:
+            print("[x] El navegador no devolvió datos de captura", file=sys.stderr)
+            return 1
+        with open(argv[4], "wb") as fh:
+            fh.write(base64.b64decode(data))
+        print(f"[i] Captura guardada en {argv[4]}")
+        return 0
+
+    if cmd == "listen":
+        # listen <puerto> <subcadena-del-target> [segundos] [filtro] [js-a-ejecutar]
+        if len(argv) < 4:
+            print(
+                "faltan argumentos: listen <puerto> <subcadena> [segundos] [filtro] [js]",
+                file=sys.stderr,
+            )
+            return 2
+        needle = argv[3]
+        duration = float(argv[4]) if len(argv) > 4 else 5.0
+        pattern = argv[5] if len(argv) > 5 else ""
+        script = argv[6] if len(argv) > 6 else ""
+        target = find_target(port, needle)
+        if not target:
+            print(f"[x] No hay target que contenga: {needle}", file=sys.stderr)
+            return 1
+        ws = WebSocket(target["webSocketDebuggerUrl"])
+        collected, by_id = [], {}
+        try:
+            ws.call("Network.enable")
+            ws.call("Page.enable")
+            if script:
+                # Se lanza ANTES de escuchar: así se capturan las peticiones que provoca.
+                ws.call(
+                    "Runtime.evaluate",
+                    {
+                        "expression": script,
+                        "awaitPromise": False,
+                        "returnByValue": False,
+                    },
+                )
+            deadline = time.time() + duration
+            while True:
+                remaining = deadline - time.time()
+                if remaining <= 0:
+                    break
+                ws.sock.settimeout(remaining)
+                try:
+                    opcode, data = ws._frame()
+                except (socket.timeout, TimeoutError, OSError, IOError):
+                    break
+                if opcode not in (0x1, 0x2):
+                    continue
+                msg = json.loads(data)
+                method = msg.get("method", "")
+                if not method.startswith("Network."):
+                    continue
+                params = msg.get("params", {})
+                blob = json.dumps(params, ensure_ascii=False)
+                if pattern and pattern not in blob:
+                    continue
+                event = _summarize_event(method, params, by_id)
+                if event:
+                    collected.append(event)
+        finally:
+            ws.close()
+        print(json.dumps(collected, ensure_ascii=False, indent=2))
         return 0
 
     if cmd == "close":

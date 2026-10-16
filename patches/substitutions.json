@@ -1,0 +1,50 @@
+[
+  {
+    "file": "core/mappings.js",
+    "label": "Fase 2.1 - conservar Google Fonts en Chromium",
+    "old": "// Remove Google Fonts Endpoints for Chromium browsers (https://codeberg.org/nobody/LocalCDN/issues/1085)\nif (!BrowserType.FIREFOX) {\n    delete mappings.cdn['fonts.gstatic.com'];\n    delete mappings.cdn['fonts.googleapis.com'];\n}",
+    "new": "// [PORT VIVALDI] Los endpoints de Google Fonts se MANTIENEN en Chromium: la opción\n// \"Block Google Fonts\" también funciona aquí (ver core/interceptor.js).\n// Upstream los elimina en Chromium por el issue #1085."
+  },
+  {
+    "file": "core/interceptor.js",
+    "label": "Fase 2.1 - bloqueo de Google Fonts sin guard de Firefox",
+    "old": "    if (BrowserType.FIREFOX && isGoogleFont && !isGoogleMaterialIcons) {",
+    "new": "    // [PORT VIVALDI] Sin el guard BrowserType.FIREFOX: el bloqueo de Google Fonts funciona\n    // también en Chromium mediante el CSS de reemplazo local.\n    if (isGoogleFont && !isGoogleMaterialIcons) {"
+  },
+  {
+    "file": "core/interceptor.js",
+    "label": "Fase 2.1 - firmar el CSS de reemplazo de Google Fonts",
+    "old": "                'redirectUrl': chrome.runtime.getURL('resources/google-fonts-placeholder.css')",
+    "new": "                // [PORT VIVALDI] fileGuard.redirige a la raíz cualquier petición a resources/*\n                // sin el secreto, así que hay que firmarla para que sirva el placeholder.\n                'redirectUrl': fileGuard.signed(chrome.runtime.getURL('resources/google-fonts-placeholder.css'))"
+  },
+  {
+    "file": "core/interceptor.js",
+    "label": "Fase 2.4 - firmar la página de recursos bloqueados",
+    "old": "            'redirectUrl': chrome.runtime.getURL(`resources/blocked/index.html?source=${source}&resource=${resource}`)",
+    "new": "            // [PORT VIVALDI] Firma con &_= porque la URL ya tiene query string.\n            'redirectUrl': fileGuard.signed(chrome.runtime.getURL(`resources/blocked/index.html?source=${source}&resource=${resource}`))"
+  },
+  {
+    "file": "core/request-analyzer.js",
+    "label": "Fase 2.2 - reactivar Font Awesome en Chromium",
+    "old": "    // Font Awesome injections in Chromium deactivated  (https://gitlab.com/nobody42/localcdn/-/issues/67)\n    if (!BrowserType.FIREFOX) {\n        let requestType = requestAnalyzer.chromeSupport(requestDetails.url);\n        if (requestType !== '') {\n            console.warn(`${LogString.PREFIX} ${requestType} ${LogString.NOT_SUPPORTED}`);\n            log.append(tabDetails.url, requestDetails.url, `${requestType} ${LogString.NOT_SUPPORTED}`, true);\n            return false;\n        }\n    }",
+    "new": "    // [PORT VIVALDI] Font Awesome se reactiva en Chromium. Upstream la desactiva aquí\n    // (issue 67) porque los ficheros de fuente que referencia el CSS son subrecursos de la\n    // extensión y el \"file guard\" los redirigía a la raíz. Ahora core/file-guard.js permite\n    // los subrecursos iniciados por la propia extensión."
+  },
+  {
+    "file": "core/file-guard.js",
+    "label": "Fase 2.2 - estado extra y ayudante de firma",
+    "old": "fileGuard.path = chrome.runtime.getURL(Address.RESOURCE_PATH);\nfileGuard.secret = '';",
+    "new": "fileGuard.path = chrome.runtime.getURL(Address.RESOURCE_PATH);\nfileGuard.secret = '';\nfileGuard.secretValue = '';\nfileGuard.origin = `chrome-extension://${chrome.runtime.id}`;\nfileGuard._seen = [];\n\n// [PORT VIVALDI] Devuelve la URL firmada. fileGuard solo acepta peticiones a resources/*\n// que terminen en el secreto, y en Chromium ese \"file guard\" SÍ está activo.\nfileGuard.signed = function (url) {\n    if (!fileGuard.secretValue) {\n        return url;\n    }\n    return `${url}${url.includes('?') ? '&' : '?'}_=${fileGuard.secretValue}`;\n};"
+  },
+  {
+    "file": "core/file-guard.js",
+    "label": "Fase 2.2 - fijar el valor del secreto al arrancar",
+    "old": "    const randomHexString = helpers.generateRandomHexString(24);\n    fileGuard.secret = `?_=${randomHexString}`;",
+    "new": "    const randomHexString = helpers.generateRandomHexString(24);\n    fileGuard.secret = `?_=${randomHexString}`;\n    // [PORT VIVALDI] El valor del secreto, para validar también las URLs firmadas con \"&_=\".\n    fileGuard.secretValue = randomHexString;"
+  },
+  {
+    "file": "core/file-guard.js",
+    "label": "Fase 2.2 - permitir subrecursos de la propia extensión",
+    "old": "fileGuard._verifyRequest = function (requestDetails) {\n\n    const redirectUrl = chrome.runtime.getURL(Address.ROOT_PATH);\n\n    if (!requestDetails.url.endsWith(fileGuard.secret)) {\n        return {redirectUrl};\n    }\n};",
+    "new": "fileGuard._verifyRequest = function (requestDetails) {\n\n    const redirectUrl = chrome.runtime.getURL(Address.ROOT_PATH);\n\n    // [PORT VIVALDI] Permitir los subrecursos que el navegador resuelve a partir de un\n    // recurso servido por la extensión: fuentes, imágenes y medios referenciados con\n    // rutas relativas (p. ej. url(../webfonts/fa-solid-900.woff2) dentro de un CSS de\n    // Font Awesome, o los assets internos de TinyMCE). El navegador construye esas URLs\n    // sin secreto y con initiator de la página o del CSS, así que por aquí pasan también\n    // las peticiones iniciadas por la propia extensión. El secreto sigue siendo\n    // obligatorio para scripts, hojas de estilo, frames y XHR: lo que permite leer el\n    // contenido de un recurso.\n    const esSubrecurso = ['font', 'image', 'media'].indexOf(requestDetails.type) > -1;\n    const esDeLaExtension = requestDetails.initiator &&\n        requestDetails.initiator.indexOf(fileGuard.origin) === 0;\n\n    if (esSubrecurso || esDeLaExtension) {\n        fileGuard._seen.push({\n            url: requestDetails.url.replace(/^chrome-extension:\\/\\/[^/]+/, 'chrome-extension://<id>'),\n            type: requestDetails.type,\n            initiator: requestDetails.initiator\n        });\n        if (fileGuard._seen.length > 20) {\n            fileGuard._seen.shift();\n        }\n        return;\n    }\n\n    // [PORT VIVALDI] Se compara por el valor del secreto (\"=<hex>\") en lugar del texto\n    // completo \"?=...\", para aceptar también las URLs firmadas con \"&_=\".\n    if (!requestDetails.url.endsWith(`=${fileGuard.secretValue}`)) {\n        return {redirectUrl};\n    }\n};"
+  }
+]

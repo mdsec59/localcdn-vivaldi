@@ -43,6 +43,15 @@ fi
 # 2) Manifest específico para Chromium/Vivaldi.
 cp "$TEMPLATE" "$TARGET/manifest.json"
 
+# 2b) Copiar los ficheros propios del port (no existen en upstream).
+mkdir -p "$TARGET/pages/options"
+cp "$ROOT/patches/core/custom-urls.js" "$TARGET/core/custom-urls.js"
+cp "$ROOT/patches/pages/options/options-custom-urls.js" "$TARGET/pages/options/options-custom-urls.js"
+cp "$ROOT/patches/pages/options/options-custom-urls.css" "$TARGET/pages/options/options-custom-urls.css"
+
+# 2c) Inyectar la UI y las traducciones, y generar el índice de recursos.
+python3 "$ROOT/tools/patch-build.py" "$TARGET"
+
 # 3) Clave de firma opcional -> ID de extensión estable entre recargas.
 if [[ -f "$ROOT/manifest/key.txt" ]]; then
   KEY="$(tr -d '\n' < "$ROOT/manifest/key.txt")"

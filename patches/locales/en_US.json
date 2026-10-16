@@ -1,0 +1,186 @@
+{
+  "customUrlsTab": {
+    "message": "Custom URLs",
+    "description": "Options tab for user defined URL mappings"
+  },
+  "customUrlsTitle": {
+    "message": "Custom URLs",
+    "description": "Title of the custom URLs section"
+  },
+  "customUrlsDescription": {
+    "message": "Add your own mappings: when a website requests a URL that matches your pattern, LocalCDN will serve the local resource you choose. Use it to cover versions or CDNs the extension does not know yet.",
+    "description": "Description of the custom URLs feature"
+  },
+  "customUrlsAddTitle": {
+    "message": "Add a URL",
+    "description": "Title of the add form"
+  },
+  "customUrlsPattern": {
+    "message": "CDN URL or pattern",
+    "description": "Label for the URL pattern input"
+  },
+  "customUrlsMatchType": {
+    "message": "Match type",
+    "description": "Label for the match type selector"
+  },
+  "customUrlsMatchGlob": {
+    "message": "Wildcards (* and ?)",
+    "description": "Glob match type"
+  },
+  "customUrlsMatchRegex": {
+    "message": "Regular expression",
+    "description": "Regex match type"
+  },
+  "customUrlsDetect": {
+    "message": "Detect local resource",
+    "description": "Button to guess the local resource"
+  },
+  "customUrlsResource": {
+    "message": "Local resource of the extension",
+    "description": "Label for the local resource input"
+  },
+  "customUrlsLabel": {
+    "message": "Label (optional)",
+    "description": "Label for the optional name input"
+  },
+  "customUrlsAdd": {
+    "message": "Add URL",
+    "description": "Button to add a URL"
+  },
+  "customUrlsHint": {
+    "message": "Examples: 1) Exact URL: https://cdn.example.com/lib/jquery-3.7.1.min.js   2) Wildcards: https://cdn.example.com/lib/*.min.js   3) Regex: ^https://cdn\\.example\\.com/lib/[0-9.]+/lib\\.min\\.js$",
+    "description": "Examples for patterns"
+  },
+  "customUrlsListTitle": {
+    "message": "Active custom URLs",
+    "description": "Title of the list"
+  },
+  "customUrlsColumnState": {
+    "message": "State",
+    "description": "Table column"
+  },
+  "customUrlsColumnPattern": {
+    "message": "Pattern",
+    "description": "Table column"
+  },
+  "customUrlsColumnResource": {
+    "message": "Local resource",
+    "description": "Table column"
+  },
+  "customUrlsColumnActions": {
+    "message": "Actions",
+    "description": "Table column"
+  },
+  "customUrlsEmpty": {
+    "message": "You have not added any URL yet.",
+    "description": "Empty list message"
+  },
+  "customUrlsRemove": {
+    "message": "Remove",
+    "description": "Remove button"
+  },
+  "customUrlsRemoved": {
+    "message": "URL removed.",
+    "description": "Notice after removing"
+  },
+  "customUrlsToggled": {
+    "message": "State updated.",
+    "description": "Notice after toggling"
+  },
+  "customUrlsAdded": {
+    "message": "URL added and active.",
+    "description": "Notice after adding"
+  },
+  "customUrlsTestTitle": {
+    "message": "Test a URL",
+    "description": "Title of the test box"
+  },
+  "customUrlsTest": {
+    "message": "Test",
+    "description": "Test button"
+  },
+  "customUrlsTestMatch": {
+    "message": "Match!",
+    "description": "Test result: match"
+  },
+  "customUrlsTestNoMatch": {
+    "message": "No custom URL matches that address.",
+    "description": "Test result: no match"
+  },
+  "customUrlsImportExportTitle": {
+    "message": "Import / export",
+    "description": "Title of import/export box"
+  },
+  "customUrlsExport": {
+    "message": "Export",
+    "description": "Export button"
+  },
+  "customUrlsImport": {
+    "message": "Import",
+    "description": "Import button"
+  },
+  "customUrlsClear": {
+    "message": "Clear all",
+    "description": "Clear button"
+  },
+  "customUrlsImportHint": {
+    "message": "You can paste a JSON list of entries and press Import. Format: [{\"pattern\": \"...\", \"resource\": \"resources/...\"}]",
+    "description": "Import hint"
+  },
+  "customUrlsExported": {
+    "message": "List exported to the text box.",
+    "description": "Notice after exporting"
+  },
+  "customUrlsImported": {
+    "message": "Imported:",
+    "description": "Notice after importing"
+  },
+  "customUrlsImportErrors": {
+    "message": "errors:",
+    "description": "Notice after importing errors"
+  },
+  "customUrlsCleared": {
+    "message": "All custom URLs have been deleted.",
+    "description": "Notice after clearing"
+  },
+  "customUrlsCandidates": {
+    "message": "Candidates found:",
+    "description": "Notice with candidate count"
+  },
+  "customUrlsNoCandidates": {
+    "message": "No similar local resource was found. Choose a path from the list (resources/...).",
+    "description": "Notice when detection fails"
+  },
+  "customUrlsResourceHint": {
+    "message": "Available resources are the ones already bundled with the extension (resources/ folder). To get more recent resources, update from the repository and rebuild.",
+    "description": "Hint about resources"
+  },
+  "customUrlsErrorEmptyPattern": {
+    "message": "Write a URL or pattern.",
+    "description": "Validation error"
+  },
+  "customUrlsErrorInvalidRegex": {
+    "message": "The regular expression is not valid.",
+    "description": "Validation error"
+  },
+  "customUrlsErrorNoHost": {
+    "message": "Could not determine the domain from the pattern. Include the domain in the pattern.",
+    "description": "Validation error"
+  },
+  "customUrlsErrorBadResource": {
+    "message": "The path must be an internal resource, e.g. resources/jquery/3.7.1/jquery.min.jsm",
+    "description": "Validation error"
+  },
+  "customUrlsErrorResourceNotFound": {
+    "message": "That local resource does not exist in this extension.",
+    "description": "Validation error"
+  },
+  "customUrlsErrorInvalidJson": {
+    "message": "Invalid JSON.",
+    "description": "Validation error"
+  },
+  "customUrlsErrorNotAnArray": {
+    "message": "JSON must be a list of entries.",
+    "description": "Validation error"
+  }
+}

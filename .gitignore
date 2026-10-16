@@ -5,6 +5,14 @@ upstream/
 dist/
 *.zip
 
+# Reglas DNR generadas (reproducibles con: node tools/gen-dnr.mjs)
+mv3/rules/ruleset-*.json
+
+# Basura del sistema
+.DS_Store
+*.swp
+__pycache__/
+
 # Clave de firma privada/pública local (no versionar la privada; la pública puede compartirse)
 manifest/key.pem
 manifest/key.txt

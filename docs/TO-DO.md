@@ -6,7 +6,7 @@ Plan de trabajo detallado del port. Prioridades: **P0** = necesario para usarlo 
 Leyenda de estimación: ~horas · ~~días · tamaño S/M/L.
 Criterio de terminado por defecto: el ítem incluye cómo verificarlo.
 
-Estado global: **Fase 0 completada (con evidencia)**, Fase 1 casi completada, resto pendiente.
+Estado global: **Fases 0 y 5.x de base hechas**; **Fase 2 completada y verificada**, **Fase 4 completada (4.1–4.5)**, **Fase 6 prototipo viable y verificado (6.1, 6.2, 6.5, 6.6)**. Pendiente: 0.6–0.9, 1.4–1.9, 2.6–2.8, 3.x, 4.6–4.8, 5.2–5.6 y 6.3–6.4.
 
 ---
 
@@ -80,32 +80,51 @@ Objetivo: extensión instalable, con manifest correcto, reproducible y con ID es
 
 Objetivo: recuperar o documentar con precisión las funciones que upstream desactiva en Chromium.
 
-- [ ] **2.1 Bloqueo de Google Fonts** (M) — P1
+- [x] **2.1 Bloqueo de Google Fonts** (M) — P1
+  **Hecho (16-oct-2026).** Reactivado en Chromium (D-006). `tools/e2e-parity.sh`: con la opción
+  activa se sirve el *placeholder* local (`resources/google-fonts-placeholder.css`, 200, 0 bytes);
+  desactivada, carga de Google.
   Hoy `core/mappings.js` elimina los endpoints de Google Fonts cuando `!BrowserType.FIREFOX`, y la
   lógica de bloqueo vive tras `BrowserType.FIREFOX`. Evaluar: (a) reactivar en Chromium, (b) usar el
   *placeholder* CSS local, o (c) documentar como no soportado.
   *Verificación:* test con página que cargue `fonts.googleapis.com` + opción activada.
-- [ ] **2.2 Inyección de Font Awesome** (M) — P1
+- [x] **2.2 Inyección de Font Awesome** (M) — P1
+  **Hecho (16-oct-2026).** Causa raíz real: `fileGuard`, no `chromeSupport()` (D-006). Se sirve la
+  fuente `fa-solid-900` (200, tipo `font`, iniciador = página) y `fileGuard._seen` la registra.
   `request-analyzer.chromeSupport()` la rechaza en Chromium. Investigar la causa original
   (issue upstream) y decidir recuperar o documentar.
   *Verificación:* página con Font Awesome servido localmente.
-- [ ] **2.3 Eliminación de `integrity`/`crossorigin` en HTML** (L) — P2
+- [x] **2.3 Eliminación de `integrity`/`crossorigin` en HTML** (L) — P2
+  **Documentado (16-oct-2026).** Limitación heredada de Chromium (sin `filterResponseData`);
+  ADR D-007 y `docs/LIMITACIONES.md` §1.
   Imposible en Chromium sin `filterResponseData` (issue Chromium 487422). Alternativas: *content
   script* que limpie atributos antes de la ejecución (limitado), `declarativeNetRequest` con
   `modifyHeaders` (no puede tocar el HTML), o asumir la limitación.
   *Verificación:* decisión escrita en `DECISIONES.md` + nota en la UI de opciones.
-- [ ] **2.4 `stripMetadata` con `EXTRA_HEADERS`** (S) — P1
+- [x] **2.4 `stripMetadata` con `EXTRA_HEADERS`** (S) — P1
+  **Hecho (16-oct-2026).** `tools/e2e-headers.sh`: con el saneador activo no salen
+  `Origin`/`Referer`; con el control desactivado sí (prueba de que Vivaldi acepta `EXTRA_HEADERS`).
   Confirmar que `onBeforeSendHeaders` con `EXTRA_HEADERS` funciona en Vivaldi (Chromium lo soporta)
   y que las cabeceras se limpian. *Verificación:* página de eco de cabeceras (p. ej. `httpbin`) con
   la opción activada.
-- [ ] **2.5 Revisar `xhrTestDomain` y el «HTML filter»** (M) — P2
+- [x] **2.5 Revisar `xhrTestDomain` y el «HTML filter»** (M) — P2
+  **Documentado (16-oct-2026).** No soportados en Chromium; el bloqueo de Google Fonts no depende
+  de ellos. `docs/LIMITACIONES.md` §2.
   Funciones que dependen de `filterResponseData` o de comportamiento Firefox; decidir estado.
 - [ ] **2.6 Métricas y página de estadísticas** (S) — P1
   Comprobar que `pages/statistics` y `pages/logging` muestran datos en Chromium.
-- [ ] **2.7 Revisar la ventana de bienvenida y los avisos** (S) — P2
+- [~] **2.7 Revisar la ventana de bienvenida y los avisos** (S) — P2
+  La ventana de bienvenida abre correctamente; falta la revisión de los textos de actualización.
   `pages/welcome` (ya se abrió en la prueba) y notas de actualización.
-- [ ] **2.8 Recursos no soportados: mensaje claro** (S) — P2
+- [~] **2.8 Recursos no soportados: mensaje claro** (S) — P2
+  El dato ya existe (contadores `missing`/`blocked` por pestaña); falta mostrarlo en opciones.
+  `docs/LIMITACIONES.md` §3.
   Los avisos actuales van a la consola del background; valorar mostrarlos en la UI.
+
+- [~] **2.9 URLs personalizadas (función propia del port)** (M) — P1
+  **Implementada y verificada (sin commitear a 16-oct-2026).** Reglas «URL de CDN → recurso local»
+  propias, aparte de `mappings.js` (D-009). `tools/e2e-custom-urls.sh` en verde.
+  `docs/URLS-PERSONALIZADAS.md`.
 
 ---
 
@@ -135,22 +154,38 @@ Objetivo: que el port se sienta nativo y sea cómodo de mantener en este navegad
 
 Objetivo: confianza para usarlo a diario y detectar regresiones al actualizar upstream.
 
-- [~] **4.1 Test oficial** (S) — P0
+- [x] **4.1 Test oficial** (S) — P0
+  **Hecho (16-oct-2026).** Ejecución completa registrada en `docs/LIMITACIONES.md` §4: `worstcase`
+  **16 Protected / 1 Unprotected** (exclusión deliberada de upstream), `tinymce` OK, y las páginas
+  `fontawesome`/`materialicons` **omitidas por el propio test** fuera de Firefox (ya no se reportan
+  como cuelgue). El rojo de `jquery` es la limitación de SRI (D-007).
   `https://www.localcdn.org/test/` debe terminar en verde. **Pendiente de ejecución manual.**
-- [ ] **4.2 Matriz de recursos** (M) — P1
+- [x] **4.2 Matriz de recursos** (M) — P1
+  **Hecho (16-oct-2026).** `tools/e2e-matrix.sh`: **22/22** URLs de CDN servidas desde
+  `chrome-extension://…/resources/…`.
   Ampliar `tools/e2e-test.sh`: jQuery, AngularJS, Bootstrap (CSS/JS), Font Awesome, MathJax, Alpine,
   moment, … Comprobar redirección + `amountInjected` esperado.
-- [ ] **4.3 Versiones no soportadas → fallback** (M) — P0
+- [x] **4.3 Versiones no soportadas → fallback** (M) — P0
+  **Hecho (16-oct-2026).** `jquery-9.9.9` no se intercepta ni se cancela; la página sigue viva y la
+  extensión lo contabiliza como `missing`.
   Verificar que una versión desconocida (p. ej. `jquery-9.9.9`) **no se rompe**: la extensión no debe
   romper la web (`cancel: false`, o recurso «blocked» según opción `blockMissing`).
-- [ ] **4.4 SRI y CSP estricta** (M) — P1
+- [x] **4.4 SRI y CSP estricta** (M) — P1
+  **Diagnosticado (16-oct-2026).** `tools/e2e-sri.sh`, casos A/B/C: CORS y SRI **sí** funcionan con
+  recursos de extensión; sólo falla el hash por sustitución de versión. ADR D-007.
   Páginas con `integrity="sha384-…"`: comprobar el comportamiento en Chromium (limitación conocida,
   ver 2.3) y documentarlo.
-- [ ] **4.5 Allowlist y «Permitir en incógnito»** (S) — P1
+- [x] **4.5 Allowlist y «Permitir en incógnito»** (S) — P1
+  **Hecho (16-oct-2026).** Funciona; matiz: la clave debe coincidir con `URL.host` **incluido el
+  puerto** (`127.0.0.1:8906` sí; `127.0.0.1` no).
   Comprobar que la lista blanca de dominios desactiva la inyección en esos sitios.
 - [ ] **4.6 Regresión en sitios reales** (M) — P1
   Navegar por ~20 sitios conocidos (noticias, tiendas, foros) y revisar que no haya errores nuevos de
   consola ni recursos roscados. Documentar hallazgos.
+- [ ] **4.9 Validar los mapeos en tiempo de build** (S) — P1
+  Encontrados **36 mapeos de upstream que apuntan a ficheros locales inexistentes** (rompen la web:
+  redirigen a un recurso que no existe). Añadir una validación en `patch-build.py`/`build.sh` que
+  descarte esos mapeos. Detalle en `docs/LIMITACIONES.md` §5.
 - [ ] **4.7 Automatización avanzada con Playwright/Puppeteer sobre Vivaldi** (M) — P2
   `tools/cdp.py` cubre lo básico; Playwright permitiría aserciones de UI y CI.
 - [ ] **4.8 Rendimiento** (S) — P2
@@ -181,23 +216,39 @@ Objetivo: confianza para usarlo a diario y detectar regresiones al actualizar up
 
 Objetivo: sobrevivir a la retirada de MV2 en Vivaldi. Trabajo acotado, no bloquea el uso actual.
 
-- [ ] **6.1 Generador de reglas DNR desde `core/mappings.js`** (L) — P1
+- [x] **6.1 Generador de reglas DNR desde `core/mappings.js`** (L) — P1
+  **Hecho (16-oct-2026).** `tools/gen-dnr.mjs` (Node, evalúa `resources.js`/`mappings.js` en `vm`).
+  Reglas `urlFilter` + `redirect.extensionPath`. Verificado con `testMatchOutcome`.
+  `docs/PLAN-MV3.md` §6.1.
   Convertir cada entrada `CDN + patrón → recursos/…` en reglas `redirect` (o `regexFilter` +
   `redirect.extensionPath`). Generador en Python/Node dentro de `tools/`.
   *Verificación:* reglas válidas (`declarativeNetRequest.testMatchOutcome` o carga sin errores).
-- [ ] **6.2 Presupuesto de reglas y particionado** (M) — P1
+- [x] **6.2 Presupuesto de reglas y particionado** (M) — P1
+  **Medido (16-oct-2026).** Límites reales del Chromium de Vivaldi: **330.000** reglas estáticas,
+  **50** rulesets, **5.000** dinámicas, **1.000** regex. El espacio completo son **83.960** reglas
+  en 14 rulesets ⇒ cabe. `docs/PLAN-MV3.md` §6.2.
   MV3 limita el número de reglas (límite bajo para dinámicas y decenas de miles para estáticas por
   *ruleset*). **Verificar los límites vigentes en la versión de Chromium de Vivaldi** y particionar
   por CDN/biblioteca, activando *rulesets* por demanda.
-- [ ] **6.3 Migrar `background.page` → service worker** (L) — P1
+- [~] **6.3 Migrar `background.page` → service worker** (L) — P1
+  **Analizado (16-oct-2026).** Plan de migración (`storage.session` para `stateManager.tabs`,
+  reconexión de ports, listeners top-level) en `docs/PLAN-MV3.md` §6.3. Es el trabajo pendiente
+  principal del plan B.
   Adaptar `state-manager.js` (estado en memoria → `chrome.storage.session`), `messenger.js` (ports) y
   los *listeners* (los SW se suspenden).
-- [ ] **6.4 Sustituir el `webRequest` bloqueante** (M) — P1
+- [~] **6.4 Sustituir el `webRequest` bloqueante** (M) — P1
+  **Analizado (16-oct-2026).** Tabla de equivalencias en `docs/PLAN-MV3.md` §6.4: casi todo tiene
+  equivalente DNR (`requestMethods`, `initiatorDomains`, `modifyHeaders`); se pierde la decisión en
+  tiempo de petición y la sustitución de versión.
   Qué se pierde: cancelación de métodos no-GET, `onBeforeSendHeaders` (metadatos) y la lógica de
   decisión en tiempo de petición. Reasignar a DNR (`modifyHeaders`, `block`) o aceptar la pérdida.
-- [ ] **6.5 Adaptar `web_accessible_resources` y CSP a MV3** (S) — P2
+- [x] **6.5 Adaptar `web_accessible_resources` y CSP a MV3** (S) — P2
+  **Hecho (16-oct-2026).** Forma de objetos (`resources` + `matches`) en el prototipo;
+  `docs/PLAN-MV3.md` §6.5.
   Formato de objetos y `content_security_policy` ampliado.
-- [ ] **6.6 Paridad funcional y repetición de Fase 4** (M) — P1
+- [x] **6.6 Paridad funcional y repetición de Fase 4** (M) — P1
+  **Hecho (16-oct-2026).** `tools/e2e-dnr.sh` repite la matriz con el motor DNR: **22/22**.
+  `docs/PLAN-MV3.md` §6.6.
   Repetir la matriz de pruebas con el motor DNR antes de considerar el cambio.
 
 ---

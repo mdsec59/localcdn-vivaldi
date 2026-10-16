@@ -1,0 +1,116 @@
+/**
+ * Options (Custom URLs) — estilos
+ * Belongs to LocalCDN (Vivaldi port).
+ *
+ * @license MPL 2.0
+ */
+
+#custom-urls-tab {
+    display: none; /* el resto de pestañas ocultas se declaran en options.css */
+}
+
+.custom-urls-notice {
+    margin: 10px 0;
+}
+
+.custom-urls-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 640px;
+    margin-bottom: 10px;
+}
+
+.custom-urls-label {
+    margin: 8px 0 2px;
+    font-weight: bold;
+}
+
+.custom-urls-input,
+.custom-urls-select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.custom-urls-primary {
+    align-self: flex-start;
+    margin-top: 12px;
+}
+
+.custom-urls-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    table-layout: fixed;
+}
+
+.custom-urls-table th,
+.custom-urls-table td {
+    border-bottom: 1px solid #ccc;
+    padding: 6px 4px;
+    text-align: left;
+    vertical-align: top;
+    word-break: break-all;
+}
+
+.custom-urls-table th:first-child,
+.custom-urls-table td:first-child {
+    width: 48px;
+}
+
+.custom-urls-table th:last-child,
+.custom-urls-table td:last-child {
+    width: 70px;
+}
+
+.custom-urls-cell {
+    font-weight: bold;
+}
+
+.custom-urls-code {
+    display: block;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.custom-urls-badge {
+    display: inline-block;
+    margin-top: 3px;
+    padding: 0 5px;
+    border-radius: 3px;
+    background-color: #ccc;
+    color: #333;
+    font-size: 11px;
+}
+
+.custom-urls-row-disabled {
+    opacity: 0.55;
+}
+
+.custom-urls-small {
+    font-size: 12px;
+    padding: 2px 6px;
+}
+
+.custom-urls-test {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    max-width: 640px;
+}
+
+.custom-urls-test .custom-urls-input {
+    flex: 1;
+}
+
+/* Tema oscuro sencillo: base.css ya define colores claros por defecto. */
+@media (prefers-color-scheme: dark) {
+    .custom-urls-table th,
+    .custom-urls-table td {
+        border-bottom-color: #555;
+    }
+
+    .custom-urls-badge {
+        background-color: #555;
+        color: #eee;
+    }
+}
