@@ -111,10 +111,13 @@ Objetivo: recuperar o documentar con precisión las funciones que upstream desac
   **Documentado (16-oct-2026).** No soportados en Chromium; el bloqueo de Google Fonts no depende
   de ellos. `docs/LIMITACIONES.md` §2.
   Funciones que dependen de `filterResponseData` o de comportamiento Firefox; decidir estado.
-- [ ] **2.6 Métricas y página de estadísticas** (S) — P1
+- [x] **2.6 Métricas y página de estadísticas** (S) — P1
+  **Hecho (16-oct-2026).** `tools/e2e-pages.sh`: `statistics.html` y `logging.html` renderizan
+  (títulos, tabla de CDN/frameworks y resumen «Promedio/Reemplazos»), sin errores de API.
   Comprobar que `pages/statistics` y `pages/logging` muestran datos en Chromium.
-- [~] **2.7 Revisar la ventana de bienvenida y los avisos** (S) — P2
-  La ventana de bienvenida abre correctamente; falta la revisión de los textos de actualización.
+- [x] **2.7 Revisar la ventana de bienvenida y los avisos** (S) — P2
+  **Hecho (16-oct-2026).** `welcome.html` abre y muestra el aviso `chromium-banner`
+  («Non-Firefox browsers do not support all features of LocalCDN»), que cubre parte de 2.8.
   `pages/welcome` (ya se abrió en la prueba) y notas de actualización.
 - [~] **2.8 Recursos no soportados: mensaje claro** (S) — P2
   El dato ya existe (contadores `missing`/`blocked` por pestaña); falta mostrarlo en opciones.

@@ -68,6 +68,11 @@ una sección «no soportado en Chromium» que liste, por ejemplo, Font Awesome e
 `use.fontawesome.com` (que upstream marca «only supported by Firefox» pese a que el port sí
 recupera la inyección de Font Awesome por CDNJS — ver 2.2) y los recursos con SRI.
 
+Ya existe un aviso en la ventana de bienvenida: el bloque `chromium-banner` («Non-Firefox browsers
+do not support all features of LocalCDN. Read more»), verificado en la Fase 2.7. Lo que falta es
+llevar el detalle (qué recurso concreto no se sirve) a la página de **opciones**, además del aviso
+general.
+
 Evidencia del estado real de los avisos: en el test oficial, `worstcase` termina **16 Protected /
 1 Unprotected** y el único no protegido es
 `https://use.fontawesome.com/releases/v5.7.2/css/all.css` con el texto «only supported by Firefox».
